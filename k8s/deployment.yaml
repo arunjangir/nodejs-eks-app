@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simplenodeapp
+  labels:
+    app: simplenodeapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simplenodeapp
+  template:
+    metadata:
+      labels:
+        app: simplenodeapp
+    spec:
+      containers:
+      - name: simplenodeapp
+        image: arun278600/simplenodeapp:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: APP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: api-key
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
